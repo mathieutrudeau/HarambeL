@@ -4,16 +4,16 @@
 #include <string>
 #include <vector>
 
+
+
+
+
 class Tokenizer {
-public:
-    Tokenizer();
-    ~Tokenizer();
+    public:
 
-    void tokenize(const std::string& input);
-    std::vector<std::string> getTokens() const;
 
-private:
-    std::vector<std::string> tokens;
+    private:
+
 };
 
 #endif // TOKENIZER_H
