@@ -1,0 +1,15 @@
+# Compiled object files
+*.o
+*.obj
+
+# Compiled dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Executables
+*.exe
+
+# Build directories
+build/
+bin/
