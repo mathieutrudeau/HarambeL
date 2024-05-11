@@ -1,6 +1,6 @@
 {
+    "cmake.generator": "Visual Studio 16 2019",
     "files.associations": {
-        "iostream": "cpp",
-        "xstring": "cpp"
+        "iostream": "cpp"
     }
 }
