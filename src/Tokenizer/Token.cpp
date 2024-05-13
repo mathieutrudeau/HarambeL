@@ -19,4 +19,3 @@ Token::Token(){
     Line = 0;
     Column = 0;
 }
-

@@ -3,20 +3,20 @@
 
 #include <string>
 
+
 class TokenizerDriver {
     public:
+        // Constructor
         TokenizerDriver(std::string sourceFilename);
 
-        void Run();
-
+        // Destructor
         ~TokenizerDriver();
 
+        // Methods
+        void Run();
     private:
-
+        // Properties
         std::string SourceFilename;
-        
-        
-
 };
 
 

@@ -4,7 +4,11 @@
 
 using namespace std;
 
-// Constructor
+/**
+ * @brief Construct a new Tokenizer Driver:: Tokenizer Driver object
+ * 
+ * @param sourceFilename Filename of the source file to tokenize
+*/
 TokenizerDriver::TokenizerDriver(std::string sourceFilename){
 
     cout << "Initializing Tokenizer Driver" << endl;
@@ -13,8 +17,6 @@ TokenizerDriver::TokenizerDriver(std::string sourceFilename){
 }
 
 // Destructor
-
-
 TokenizerDriver::~TokenizerDriver(){
 }
 
@@ -30,14 +32,12 @@ void TokenizerDriver::Run(){
     // Check if the file is open
     if(file.is_open()){
         cout << "File is open" << endl;
+        string line;
+        while(getline(file, line)){
+            cout << line << endl;
+        }
     } else {
         cout << "File is not open" << endl;
-    }
-
-    // Read the file
-    string line;
-    while(getline(file, line)){
-        cout << line << endl;
     }
 
     // Close the file
