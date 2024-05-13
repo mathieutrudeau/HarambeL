@@ -3,6 +3,8 @@
 
 #include <string>
 
+class Tokenizer;
+
 
 class TokenizerDriver {
     public:
@@ -17,6 +19,8 @@ class TokenizerDriver {
     private:
         // Properties
         std::string SourceFilename;
+        Tokenizer* Tokenizer_ptr;
+        
 };
 
 

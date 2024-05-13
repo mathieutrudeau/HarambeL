@@ -1,4 +1,6 @@
 #include "TokenizerDriver.h"
+#include "Tokenizer.h"
+#include "../Logger/Logger.h"
 #include <fstream> 
 #include <iostream>
 
@@ -11,33 +13,37 @@ using namespace std;
 */
 TokenizerDriver::TokenizerDriver(std::string sourceFilename){
 
-    cout << "Initializing Tokenizer Driver" << endl;
+    // Log the initialization
+    Logger::log("Initializing Tokenizer Driver");
 
     SourceFilename = sourceFilename;
+    Tokenizer_ptr = new Tokenizer(SourceFilename);
 }
 
 // Destructor
 TokenizerDriver::~TokenizerDriver(){
+    // Log the destruction
+    Logger::log("Destroying Tokenizer Driver");
 }
 
 void TokenizerDriver::Run(){
-    cout << "Running Tokenizer Driver" << endl;
+    Logger::log("Running Tokenizer Driver");
 
     // Show the source filename
-    cout << "Source Filename: " << SourceFilename << endl;
+    Logger::log("Source Filename: " + SourceFilename);
 
     // Open the file
     ifstream file(SourceFilename);
 
     // Check if the file is open
     if(file.is_open()){
-        cout << "File is open" << endl;
+        Logger::log("File is open");
         string line;
         while(getline(file, line)){
-            cout << line << endl;
+            Logger::log("Line: " + line);
         }
     } else {
-        cout << "File is not open" << endl;
+        Logger::log("File is not open");
     }
 
     // Close the file

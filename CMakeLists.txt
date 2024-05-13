@@ -10,7 +10,9 @@ src/Tokenizer/TokenizerDriver.cpp
 src/Tokenizer/Tokenizer.h 
 src/Tokenizer/Tokenizer.cpp 
 src/Tokenizer/Token.h 
-src/Tokenizer/Token.cpp)
+src/Tokenizer/Token.cpp
+src/Logger/Logger.h
+src/Logger/Logger.cpp)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

@@ -17,7 +17,7 @@ class Tokenizer {
         ~Tokenizer();
 
         // Methods
-        Token GetNextToken();
+        Token* GetNextToken();
 
     private:
 

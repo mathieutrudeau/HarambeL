@@ -9,7 +9,6 @@
  * @brief A Token Type represents the type of a token.
 */
 enum class TokenType {
-    Number,
     Plus,
     Minus,
     Multiply,
@@ -40,8 +39,10 @@ class Token{
         int Column;
 
         // Methods
+        static TokenType StringToTokenType(std::string tokenStr);
 
     private:
+
 };
 
 #endif // TOKEN_H
