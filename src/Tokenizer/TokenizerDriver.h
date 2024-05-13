@@ -4,6 +4,7 @@
 #include <string>
 
 class Tokenizer;
+enum class TokenType;
 
 
 class TokenizerDriver {
@@ -19,7 +20,7 @@ class TokenizerDriver {
     private:
         // Properties
         std::string SourceFilename;
-        Tokenizer* Tokenizer_ptr;
+        Tokenizer* Tokenizer_obj;
         
 };
 

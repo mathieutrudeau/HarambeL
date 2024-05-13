@@ -1,52 +1,41 @@
 #include "TokenizerDriver.h"
 #include "Tokenizer.h"
+#include "Token.h"
 #include "../Logger/Logger.h"
-#include <fstream> 
+#include <fstream>
 #include <iostream>
-
-using namespace std;
 
 /**
  * @brief Construct a new Tokenizer Driver:: Tokenizer Driver object
- * 
+ *
  * @param sourceFilename Filename of the source file to tokenize
-*/
-TokenizerDriver::TokenizerDriver(std::string sourceFilename){
-
+ */
+TokenizerDriver::TokenizerDriver(std::string sourceFilename)
+{
     // Log the initialization
     Logger::log("Initializing Tokenizer Driver");
 
     SourceFilename = sourceFilename;
-    Tokenizer_ptr = new Tokenizer(SourceFilename);
+    Tokenizer_obj = new Tokenizer(SourceFilename);
 }
 
 // Destructor
-TokenizerDriver::~TokenizerDriver(){
+TokenizerDriver::~TokenizerDriver()
+{
+    // Delete the Tokenizer object
+    delete Tokenizer_obj;
+
     // Log the destruction
     Logger::log("Destroying Tokenizer Driver");
 }
 
-void TokenizerDriver::Run(){
+void TokenizerDriver::Run()
+{
     Logger::log("Running Tokenizer Driver");
 
-    // Show the source filename
-    Logger::log("Source Filename: " + SourceFilename);
-
-    // Open the file
-    ifstream file(SourceFilename);
-
-    // Check if the file is open
-    if(file.is_open()){
-        Logger::log("File is open");
-        string line;
-        while(getline(file, line)){
-            Logger::log("Line: " + line);
-        }
-    } else {
-        Logger::log("File is not open");
+    while (Tokenizer_obj->GetNextToken()->Type != TokenType::EndOfInput)
+    {
     }
 
-    // Close the file
-    file.close();
     
 }

@@ -3,10 +3,9 @@
 
 #include <string>
 #include <vector>
-
+#include <fstream>
 
 class Token;
-
 
 class Tokenizer {
     public:
@@ -26,6 +25,8 @@ class Tokenizer {
         char CurrentCharacter;
         int CurrentLine;
         int CurrentColumn;
+        int BufferIndex;
+        std::string Buffer;
 };
 
 #endif // TOKENIZER_H

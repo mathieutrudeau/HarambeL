@@ -1,11 +1,5 @@
-def
-int
-float
-double
-string
-bool
-void
+func main()::void
 {
+    int a = 3;
+    string b;
 }
-(
-)
