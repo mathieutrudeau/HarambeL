@@ -7,6 +7,9 @@
 #include "../Logger/Logger.h"
 
 
+char Tokenizer::Special_Characters[] = {'\0', ' ', '\n', '\t', '\r', '\v', '\f'};
+
+
 Tokenizer::Tokenizer(std::string sourceFilename)
 {
     Logger::log("Initializing Tokenizer with source file: " + sourceFilename);
@@ -47,39 +50,56 @@ Tokenizer::~Tokenizer()
 
 Token* Tokenizer::GetNextToken()
 {    
-    // Check if the buffer index is at the end of the buffer
-    if (BufferIndex >= Buffer.size() || CurrentCharacter == '\0')
+    // Define the current lexeme
+    std::string lexeme = "";
+    Token* token = new Token();
+
+    // Loop through the buffer until a special character is found
+    do
     {
-        Logger::log("EOF");
-        
-        Token* token = new Token();
+        // Get the next character
+        CurrentCharacter = Buffer[BufferIndex];
+        BufferIndex++;  
+
+        // Add the character to the lexeme if it is not a special character
+        if (!CheckForSpecialCharacter(CurrentCharacter))
+            lexeme += CurrentCharacter;
+    } 
+    while (!CheckForSpecialCharacter(CurrentCharacter) || lexeme == "");
+
+
+    // Check if the lexeme corresponds to a valid token
+    
+    
+
+    Logger::log("Lex: "+lexeme);
+
+
+    // Check if the current character is the end of the file
+    if (CurrentCharacter == '\0')
         token->Type = TokenType::EndOfInput;
         
-        return token;
-    }
-
-    // Get the next character
-    CurrentCharacter = Buffer[BufferIndex];
-    BufferIndex++;
-
-    // Check if the character is a space
-    if (CurrentCharacter == ' ')
-    {
-        return GetNextToken();
-    }
-
-    // Check if the character is a newline
-    if (CurrentCharacter == '\n')
-    {
-        Logger::log("Newline");
-        CurrentLine++;
-        CurrentColumn = 1;
-        return GetNextToken();
-    }
-
-    Logger::log("Got character: " + std::string(1, CurrentCharacter));
+    return token;
+}
 
 
-    return new Token();
-
+bool Tokenizer::CheckForSpecialCharacter(char c)
+{
+    for (int i = 0; i < sizeof(Special_Characters); i++)
+        if (Special_Characters[i] == c)
+        {
+            // Update the current line and column if the character is a newline
+            if (c == '\n')
+            {
+                CurrentLine++;
+                CurrentColumn = 1;
+            }
+            // Update the current column if the character is not a newline
+            else
+            {
+                CurrentColumn++;
+            }
+            return true;
+        }
+    return false;
 }

@@ -27,6 +27,14 @@ class Tokenizer {
         int CurrentColumn;
         int BufferIndex;
         std::string Buffer;
+
+        static char Special_Characters[];
+
+        // Methods
+        bool CheckForSpecialCharacter(char c);
+
+
+        
 };
 
 #endif // TOKENIZER_H

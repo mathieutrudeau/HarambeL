@@ -57,6 +57,8 @@ enum class TokenType {
     // Keywords
     If,
     Else,
+    Func,
+    Return,
 
 
     EndOfInput,
