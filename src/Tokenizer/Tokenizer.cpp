@@ -54,6 +54,13 @@ Token* Tokenizer::GetNextToken()
     std::string lexeme = "";
     Token* token = new Token();
 
+    // Check if the buffer index is at the end of the buffer
+    if (BufferIndex >= Buffer.size())
+    {
+        // Create an end of input token
+        return CreateToken("\0");
+    }
+
     // Loop through the buffer until a special character is found
     do
     {
@@ -67,7 +74,6 @@ Token* Tokenizer::GetNextToken()
     } 
     while (!CheckForSpecialCharacter(CurrentCharacter) || lexeme == "");
 
-    Logger::log("Current lexeme: "+lexeme);
 
     bool isCut = false;
     size_t tokenSize = lexeme.size();
@@ -95,20 +101,7 @@ bool Tokenizer::CheckForSpecialCharacter(char c)
 {
     for (int i = 0; i < sizeof(Special_Characters); i++)
         if (Special_Characters[i] == c)
-        {
-            // Update the current line and column if the character is a newline
-            if (c == '\n')
-            {
-                CurrentLine++;
-                CurrentColumn = 1;
-            }
-            // Update the current column if the character is not a newline
-            else
-            {
-                CurrentColumn++;
-            }
             return true;
-        }
     return false;
 }
 

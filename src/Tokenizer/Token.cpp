@@ -6,7 +6,7 @@
 // Constructor
 Token::Token(TokenType type, std::string lexeme, int line, int column)
 {
-    Logger::log("Creating token with type: " + std::to_string((int)type) + ", lexeme: " + lexeme + ", line: " + std::to_string(line) + ", column: " + std::to_string(column));
+    //Logger::log("Creating token with type: " + std::to_string((int)type) + ", lexeme: " + lexeme + ", line: " + std::to_string(line) + ", column: " + std::to_string(column));
 
     Type = type;
     Lexeme = lexeme;
