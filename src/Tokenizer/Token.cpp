@@ -1,3 +1,5 @@
+#include <cctype>
+#include <algorithm>
 #include "Token.h"
 #include "../Logger/Logger.h"
 
@@ -29,7 +31,10 @@ Token::Token()
 // Methods
 TokenType Token::StringToTokenType(std::string tokenStr)
 {
-    Logger::log("Converting token string to token type: " + tokenStr);
+    //Logger::log("Converting token string to token type: " + tokenStr);
+
+    // Make the string lowercase for easier comparison
+    std::transform(tokenStr.begin(), tokenStr.end(), tokenStr.begin(), ::tolower);
 
     // Start by checking for a type
     if (tokenStr == "int" || tokenStr == "integer")
@@ -128,7 +133,70 @@ TokenType Token::StringToTokenType(std::string tokenStr)
     // Check for the end of input
     if (tokenStr == "\0")
         return TokenType::EndOfInput;
-    
+
+    // Check for an identifier
+    if (IsIdentifier(tokenStr))
+        return TokenType::Identifier;
+
+    // Check for an integer literal
+    if (IsIntegerLiteral(tokenStr))
+        return TokenType::IntegerLiteral;
 
     return TokenType::None;
+}
+
+
+bool Token::IsIdentifier(std::string tokenStr)
+{
+    // An identifier must start with a letter or an underscore
+    if (!isalpha(tokenStr[0]) && tokenStr[0] != '_')
+        return false;
+
+    // Check the rest of the characters, they can be letters, numbers, or underscores
+    for (int i = 1; i < tokenStr.length(); i++)
+    {
+        if (!isalnum(tokenStr[i]) && tokenStr[i] != '_')
+            return false;
+    }
+
+    return true;
+}
+
+bool Token::IsIntegerLiteral(std::string tokenStr)
+{
+    // Check if the string is empty
+    if (tokenStr == "")
+        return false;
+
+    // Check if the first character is a digit  
+    if (!isdigit(tokenStr[0]))
+        return false;
+
+    // If the first character is a zero, the string must be a single zero
+    if (tokenStr[0] == '0' && tokenStr.length() > 1)
+        return false;
+
+    // Check the rest of the characters, they must all be digits
+    for (int i = 1; i < tokenStr.length(); i++)
+    {
+        if (!isdigit(tokenStr[i]))
+            return false;
+    }
+
+    return true;
+}
+
+
+
+// Overloaded Operators
+std::ostream& operator<<(std::ostream& os, const Token& token)
+{
+    if (token.Type == TokenType::EndOfInput)
+    {
+        os << "Token: End of Input (Type: " << (int)token.Type << ", Line: " << token.Line << ", Column: " << token.Column << ")";
+        return os;
+    }
+    
+    os << "Token: " << token.Lexeme << " (Type: " << (int)token.Type << ", Line: " << token.Line << ", Column: " << token.Column << ")";
+    return os;
 }

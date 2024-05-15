@@ -32,7 +32,7 @@ class Tokenizer {
 
         // Methods
         bool CheckForSpecialCharacter(char c);
-
+        Token* CreateToken(std::string lexeme);
 
         
 };

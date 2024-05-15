@@ -60,6 +60,12 @@ enum class TokenType {
     Func,
     Return,
 
+    // Identifiers
+    Identifier,
+
+    // Integer Literals
+    IntegerLiteral,
+
 
     EndOfInput,
     None,
@@ -87,8 +93,15 @@ class Token{
         // Methods
         static TokenType StringToTokenType(std::string tokenStr);
 
+        // Overloaded Operators
+        friend std::ostream& operator<<(std::ostream& os, const Token& token);
+        
+
     private:
 
+        // Methods
+        static bool IsIdentifier(std::string tokenStr);
+        static bool IsIntegerLiteral(std::string tokenStr);
 };
 
 #endif // TOKEN_H

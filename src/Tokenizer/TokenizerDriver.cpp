@@ -33,9 +33,15 @@ void TokenizerDriver::Run()
 {
     Logger::log("Running Tokenizer Driver");
 
-    while (Tokenizer_obj->GetNextToken()->Type != TokenType::EndOfInput)
-    {
-    }
+    Token* token;
 
-    
+    do
+    {
+        token = Tokenizer_obj->GetNextToken();
+        if(token->Type != TokenType::EndOfInput)
+            std::cout << *token << std::endl;    
+    } 
+    while (token->Type != TokenType::EndOfInput);
+
+
 }

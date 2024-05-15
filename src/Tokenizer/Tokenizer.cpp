@@ -67,19 +67,27 @@ Token* Tokenizer::GetNextToken()
     } 
     while (!CheckForSpecialCharacter(CurrentCharacter) || lexeme == "");
 
+    Logger::log("Current lexeme: "+lexeme);
 
-    // Check if the lexeme corresponds to a valid token
-    
-    
+    bool isCut = false;
+    size_t tokenSize = lexeme.size();
 
-    Logger::log("Lex: "+lexeme);
+    while (Token::StringToTokenType(lexeme) == TokenType::None && lexeme != "")
+    {
+        // Since the lexeme is not a valid token, remove the last character
+        lexeme.pop_back();
+        BufferIndex--;
 
+        isCut = true;
+        tokenSize--;
+    }
 
-    // Check if the current character is the end of the file
-    if (CurrentCharacter == '\0')
-        token->Type = TokenType::EndOfInput;
-        
-    return token;
+    // Move the buffer index back one if the lexeme was cut
+    if (isCut && tokenSize > 0)
+        BufferIndex--;
+
+    // Create a new token
+    return CreateToken(lexeme);
 }
 
 
@@ -102,4 +110,15 @@ bool Tokenizer::CheckForSpecialCharacter(char c)
             return true;
         }
     return false;
+}
+
+
+
+Token* Tokenizer::CreateToken(std::string lexeme)
+{
+    // Convert the lexeme to a token type
+    TokenType type = Token::StringToTokenType(lexeme);
+
+    // Create a new token
+    return new Token(type, lexeme, CurrentLine, CurrentColumn);
 }
