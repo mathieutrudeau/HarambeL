@@ -7,21 +7,35 @@ class Tokenizer;
 enum class TokenType;
 
 
+/**
+ * @brief The Tokenizer Driver class is responsible for running the Tokenizer
+ */
 class TokenizerDriver {
     public:
-        // Constructor
+        /*
+        * @brief Construct a new Tokenizer Driver:: Tokenizer Driver object
+        * 
+        * @param sourceFilename Filename of the source file to tokenize
+        */
         TokenizerDriver(std::string sourceFilename);
 
-        // Destructor
+        /*
+        * @brief Destroy the Tokenizer Driver:: Tokenizer Driver object
+        */
         ~TokenizerDriver();
 
-        // Methods
+        /*
+        * @brief Run the Tokenizer Driver
+        */
         void Run();
+
     private:
-        // Properties
-        std::string SourceFilename;
-        Tokenizer* Tokenizer_obj;
         
+        // Source Filename
+        std::string SourceFilename;
+        
+        // Tokenizer object
+        Tokenizer* Tokenizer_obj;
 };
 
 

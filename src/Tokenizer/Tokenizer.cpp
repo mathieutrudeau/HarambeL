@@ -6,9 +6,7 @@
 #include "Token.h"
 #include "../Logger/Logger.h"
 
-
 char Tokenizer::Special_Characters[] = {'\0', ' ', '\n', '\t', '\r', '\v', '\f'};
-
 
 Tokenizer::Tokenizer(std::string sourceFilename)
 {
@@ -16,8 +14,6 @@ Tokenizer::Tokenizer(std::string sourceFilename)
 
     SourceFilename = sourceFilename;
     CurrentCharacter = ' ';
-    CurrentLine = 1;
-    CurrentColumn = 1;
     Buffer = "";
     BufferIndex = 0;
 
@@ -34,7 +30,7 @@ Tokenizer::Tokenizer(std::string sourceFilename)
             Buffer += c;
         }
 
-        Logger::log("Source file contents: " + Buffer);      
+        Logger::log("Source file contents: " + Buffer);
     }
     else
     {
@@ -48,11 +44,10 @@ Tokenizer::~Tokenizer()
     Logger::log("Destroying Tokenizer");
 }
 
-Token* Tokenizer::GetNextToken()
-{    
+Token *Tokenizer::GetNextToken()
+{
     // Define the current lexeme
     std::string lexeme = "";
-    Token* token = new Token();
 
     // Check if the buffer index is at the end of the buffer
     if (BufferIndex >= Buffer.size())
@@ -65,15 +60,12 @@ Token* Tokenizer::GetNextToken()
     do
     {
         // Get the next character
-        CurrentCharacter = Buffer[BufferIndex];
-        BufferIndex++;  
+        GetNextChar();
 
         // Add the character to the lexeme if it is not a special character
         if (!CheckForSpecialCharacter(CurrentCharacter))
             lexeme += CurrentCharacter;
-    } 
-    while (!CheckForSpecialCharacter(CurrentCharacter) || lexeme == "");
-
+    } while (!CheckForSpecialCharacter(CurrentCharacter) || lexeme == "");
 
     bool isCut = false;
     size_t tokenSize = lexeme.size();
@@ -82,7 +74,7 @@ Token* Tokenizer::GetNextToken()
     {
         // Since the lexeme is not a valid token, remove the last character
         lexeme.pop_back();
-        BufferIndex--;
+        Backtrack();
 
         isCut = true;
         tokenSize--;
@@ -96,7 +88,6 @@ Token* Tokenizer::GetNextToken()
     return CreateToken(lexeme);
 }
 
-
 bool Tokenizer::CheckForSpecialCharacter(char c)
 {
     for (int i = 0; i < sizeof(Special_Characters); i++)
@@ -105,13 +96,67 @@ bool Tokenizer::CheckForSpecialCharacter(char c)
     return false;
 }
 
-
-
-Token* Tokenizer::CreateToken(std::string lexeme)
+Token *Tokenizer::CreateToken(std::string lexeme)
 {
     // Convert the lexeme to a token type
     TokenType type = Token::StringToTokenType(lexeme);
 
+    int line, column;
+
+    GetTokenPosition(line, column, (int) lexeme.size());
+
     // Create a new token
-    return new Token(type, lexeme, CurrentLine, CurrentColumn);
+    return new Token(type, lexeme, line, column);
+}
+
+
+void Tokenizer::GetTokenPosition(int& line, int& column, int lexemeSize)
+{
+    line = 1;
+    column = 1;
+
+    int topIndex = BufferIndex - lexemeSize;
+
+    for (int i = 0; i < topIndex; i++)
+    {
+        // Make sure the last character is not a special character
+        if (CheckForSpecialCharacter(Buffer[i+lexemeSize]) && i == topIndex - 1)
+            break;
+
+        if (Buffer[i] == '\n')
+        {
+            line++;
+            column = 1;
+        }
+        else if (Buffer[i] == '\t')
+            column += 4;
+        else
+            column++;
+
+        
+    }
+}
+
+
+void Tokenizer::GetNextChar()
+{
+    // Check if the buffer index is at the end of the buffer
+    if (BufferIndex >= Buffer.size())
+    {
+        CurrentCharacter = '\0';
+        return;
+    }
+
+    // Get the next character
+    CurrentCharacter = Buffer[BufferIndex];
+    BufferIndex++;
+}
+
+void Tokenizer::Backtrack()
+{
+    // Move the buffer index back one
+    BufferIndex--;
+
+    // Set the current character to the previous character
+    CurrentCharacter = Buffer[BufferIndex];
 }

@@ -7,34 +7,74 @@
 
 class Token;
 
+/**
+ * @brief The Tokenizer class is responsible for tokenizing a source file
+ */
 class Tokenizer {
     public:
-        // Constructor
+        
+        /*
+        * @brief Construct a new Tokenizer object
+        *
+        * @param sourceFilename Filename of the source file to tokenize
+        */
         Tokenizer(std::string sourceFilename);
 
-        // Destructor
+        /*
+        * @brief Destroy the Tokenizer object
+        */
         ~Tokenizer();
 
-        // Methods
+        /*
+        * @brief Get the next token from the source file
+        */
         Token* GetNextToken();
 
     private:
 
-        // Properties
+        // Source Filename
         std::string SourceFilename;
+
+        // Current Character
         char CurrentCharacter;
-        int CurrentLine;
-        int CurrentColumn;
+
+        // Buffer Index
         int BufferIndex;
+
+        // Buffer
         std::string Buffer;
 
+        // Special Characters Array
         static char Special_Characters[];
 
-        // Methods
+        /*
+        * @brief Check if a character is a special character
+        * @param c The character to check
+        * @return True if the character is a special character, false otherwise
+        */
         bool CheckForSpecialCharacter(char c);
+
+        /*
+        * @brief Create a token with the given lexeme
+        * @param lexeme The lexeme of the token
+        * @return The created token object
+        */
         Token* CreateToken(std::string lexeme);
 
-        
+        /*
+        * @brief Get the next character from the buffer
+        */
+        void GetNextChar();        
+
+        /*
+        * @brief Backtrack the buffer index
+        */
+        void Backtrack();
+
+        void GetTokenPosition(int& line, int& column, int lexemeSize);
+
+        int GetLineNumber();
+        int GetColumnNumber();
 };
 
 #endif // TOKENIZER_H
